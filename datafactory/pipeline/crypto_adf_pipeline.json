@@ -1,0 +1,181 @@
+{
+    "name": "FetchCryptoToBronze",
+    "properties": {
+        "activities": [
+            {
+                "name": "ForEachCrypto",
+                "type": "ForEach",
+                "dependsOn": [
+                    {
+                        "activity": "GetCurrencyList",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "items": {
+                        "value": "@activity('GetCurrencyList').output.value",
+                        "type": "Expression"
+                    },
+                    "isSequential": true,
+                    "activities": [
+                        {
+                            "name": "CopyRawData",
+                            "type": "Copy",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "source": {
+                                    "type": "RestSource",
+                                    "httpRequestTimeout": "00:01:40",
+                                    "requestInterval": "00.00:00:00.010",
+                                    "requestMethod": "GET",
+                                    "paginationRules": {
+                                        "supportRFC5988": "true"
+                                    }
+                                },
+                                "sink": {
+                                    "type": "JsonSink",
+                                    "storeSettings": {
+                                        "type": "AzureBlobFSWriteSettings"
+                                    },
+                                    "formatSettings": {
+                                        "type": "JsonWriteSettings"
+                                    }
+                                },
+                                "enableStaging": false
+                            },
+                            "inputs": [
+                                {
+                                    "referenceName": "AlphaVantage_JSON",
+                                    "type": "DatasetReference",
+                                    "parameters": {
+                                        "symbol": {
+                                            "value": "@item().symbol",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            ],
+                            "outputs": [
+                                {
+                                    "referenceName": "Raw_Json",
+                                    "type": "DatasetReference",
+                                    "parameters": {
+                                        "symbol": {
+                                            "value": "@item().symbol",
+                                            "type": "Expression"
+                                        },
+                                        "filename": {
+                                            "value": "@item().filename",
+                                            "type": "Expression"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "GetCurrencyList",
+                "type": "Lookup",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "JsonSource",
+                        "storeSettings": {
+                            "type": "AzureBlobFSReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "JsonReadSettings"
+                        }
+                    },
+                    "dataset": {
+                        "referenceName": "GetCryptoList",
+                        "type": "DatasetReference"
+                    },
+                    "firstRowOnly": false
+                }
+            },
+            {
+                "name": "Silver Layer",
+                "description": "Silver Layer Transformations",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "ForEachCrypto",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Users/levent.soykan@************.com/CryptoProject/transform_data_silver_layer"
+                },
+                "linkedServiceName": {
+                    "referenceName": "DatabricksCryptoProject",
+                    "type": "LinkedServiceReference"
+                }
+            },
+            {
+                "name": "Gold Layer",
+                "description": "Gold Layer Transformations",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Silver Layer",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Users/levent.soykan@********.com/CryptoProject/transform_data_gold_layer"
+                },
+                "linkedServiceName": {
+                    "referenceName": "DatabricksCryptoProject",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2025-04-11T14:32:42Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

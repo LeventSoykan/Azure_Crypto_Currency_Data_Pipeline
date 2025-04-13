@@ -1,0 +1,27 @@
+[
+{ 
+		"symbol": "BTC", 
+		"filename": "btc.json",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=BTC&market=EUR&apikey=**************"
+	},
+  { 
+		"symbol": "ETH", 
+		"filename": "eth.json",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=ETH&market=EUR&apikey=**************"
+	 },
+  { 
+		"symbol": "DOGE", 
+		"filename": "doge.json",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=DOGE&market=EUR&apikey=**************"
+	 },
+  { 
+		"symbol": "XRP", 
+		"filename": "xrp.json",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=XRP&market=EUR&apikey=**************"
+	 },
+  { 
+		"symbol": "USDT", 
+		"filename": "usdt.json",
+		"url": "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=USDT&market=EUR&apikey=**************"
+	 }
+]

@@ -1,0 +1,14 @@
+{
+    "name": "DatabricksCryptoProject",
+    "type": "Microsoft.DataFactory/factories/linkedservices",
+    "properties": {
+        "annotations": [],
+        "type": "AzureDatabricks",
+        "typeProperties": {
+            "domain": "https://adb-371957181096577.17.azuredatabricks.net",
+            "authentication": "MSI",
+            "workspaceResourceId": "/subscriptions/e9d804c1-892b-410b-a98b-b9c6f5b0e458/resourceGroups/stock-data-pipeline/providers/Microsoft.Databricks/workspaces/lso-crypto-project",
+            "existingClusterId": "0406-085215-yl11dh1w"
+        }
+    }
+}

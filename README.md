@@ -31,7 +31,7 @@ This project builds a full data pipeline using Azure tools to fetch and analyze 
 
 ## 🔄 Pipeline Overview
 
-1. `datafactory/pipeline/crypto_bronze_pipeline.json`:  
+1. `datafactory/pipeline/crypto_adf_pipeline.json`:  
    Fetches data for 5 cryptocurrencies using a `Lookup` + `ForEach` + `Copy Data` loop.
 
 2. `databricks/notebooks/`:
@@ -68,15 +68,15 @@ via Azure Monitor + Log Analytics + Action Group setup.
 - Alpha Vantage API Key
 
 ### 🔑 Config Files to Customize:
-- `datafactory/parameters/crypto_list.json`
-- `databricks/notebooks/*.py` (paths and tokens)
+- `datafactory/parameters/crypto.json`
+- `databricks/notebooks/*.ipnyb` (paths and tokens)
 - `.env` file (not included here) for secure key handling
 
 ---
 
 ## 🔗 Power BI Dashboard
 
-You can view the screenshot here.
+You can view the screenshot here.  ![alt text](https://github.com/LeventSoykan/Azure_Crypto_Currency_Data_Pipeline/blob/master/powerbi/Crypto_Currency_Dashboard_PowerBI_SS.png)
 
 ---
 
